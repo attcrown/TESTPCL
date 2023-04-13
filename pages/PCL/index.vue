@@ -1,5 +1,4 @@
-<!-- eslint-disable eqeqeq -->
-<!-- eslint-disable eqeqeq -->
+<!-- eslint-disable vue/no-template-shadow -->
 <template>
     <div class="container mt-5">
         <div class="blue-grey lighten-3 text-left">
@@ -14,7 +13,7 @@
             <v-btn
                 elevation="2"
                 color="text-h8 dark lighten-2 pa-2"
-                @click="dialogIAdd = true"
+                @click="(dialogIAdd = true),cleardatapup()"
             ><span>Add Piping</span>
             </v-btn>
         </div>
@@ -81,6 +80,7 @@
                             @click="
                                 selectedItem = item;
                                 dialogD = true;
+                                detailsum(selectedItem);
                             ">
                             <span>Detail</span>
                             </v-btn>
@@ -126,10 +126,14 @@
                                 v-model="material"
                                 label="Material"
                             ></v-text-field>
-                            <v-text-field
-                                v-model="pipe_size"
-                                label="Pipe size"
-                            ></v-text-field>
+                            <div style="display: flex; align-items: center;">
+                                <v-select v-model="pipe_size" :items="items" label="Pipe size"></v-select>
+                                <v-btn class="mx-2" x-small fab dark color="indigo" @click="dialogpipe = true">
+                                    <v-icon dark>
+                                        mdi-plus
+                                    </v-icon>
+                                </v-btn> 
+                            </div>
                             <v-text-field
                                 v-model="stress"
                                 label="Stress"
@@ -149,38 +153,6 @@
                             <!-- <v-text-field
                                 :value = "selectedItem.line_number"
                                 label="Line number"
-                            ></v-text-field>
-                            <v-text-field
-                                label="From"
-                                :value = "selectedItem.from"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Drawing number"
-                                :value = "selectedItem.drawing_number"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Material"
-                                :value = "selectedItem.material"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Pipe size"
-                                :value = "selectedItem.pipe_size"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Stress"
-                                :value = "selectedItem.stress"
-                            ></v-text-field>
-                            <v-text-field
-                                label="ca"
-                                :value = "selectedItem.ca"
-                            ></v-text-field>
-                            <v-text-field
-                                label="design pressure"
-                                :value = "selectedItem.design_pressure"
-                            ></v-text-field>
-                            <v-text-field
-                                label="design temperature"
-                                :value = "selectedItem.design_temperature"
                             ></v-text-field> -->
                         </v-col>
 
@@ -188,42 +160,6 @@
                             cols="12"
                             sm="6"
                             >
-                            <!-- <v-text-field
-                                label="Location"
-                                :value = "selectedItem.location"
-                            ></v-text-field> 
-                            <v-text-field
-                                label="To"
-                                :value = "selectedItem.to"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Service"
-                                :value = "selectedItem.service"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Inservice date"
-                                :value = "selectedItem.inservice_date"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Original thickness"
-                                :value = "selectedItem.original_thickness"
-                            ></v-text-field>
-                            <v-text-field
-                                label="Joint effciency"
-                                :value = "selectedItem.joint_efficiency"
-                            ></v-text-field>
-                            <v-text-field
-                                label="design life"
-                                :value = "selectedItem.design_life"
-                            ></v-text-field>
-                            <v-text-field
-                                label="operating pressure"
-                                :value = "selectedItem.operating_pressure"
-                            ></v-text-field>
-                            <v-text-field
-                                label="operating temperature"
-                                :value = "selectedItem.operating_temperature"
-                            ></v-text-field> -->
                             <v-text-field
                                 v-model="location"
                                 label="Location"
@@ -300,27 +236,103 @@
         <div class="text-center">
             <v-dialog
             v-model="dialogD"
-            width="500"
+            width="1300"
             >
             <v-card>
                 <v-card-title class="text-h5 grey lighten-2">
                 PIPING                             
                 </v-card-title>
-                
                 <v-card-text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </v-card-text>
+                    <h3 class="mt-3 mb-3">LINE NUMBER: {{ selectedItem.line_number }}</h3>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <v-card-title class="text-h8">CML</v-card-title>
+                            <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogAddcml = true),CMLSUM(selectedItem)"><span>Add CML</span></v-btn>
+                        </div>
 
+                        <v-simple-table
+                            fixed-header
+                            height="600px"
+                        >                    
+                            <thead>
+                                <tr>
+                                <th class="text-left">
+                                    CML number
+                                </th>
+                                <th class="text-left">
+                                    CML description
+                                </th>
+                                <th class="text-left">
+                                    Actual outside diameter
+                                </th>
+                                <th class="text-left">
+                                    Design thickness(mm)
+                                </th>
+                                <th class="text-left">
+                                    Structural thickness(mm)
+                                </th>
+                                <th class="text-left">
+                                    Required thickness(mm)
+                                </th>
+                                <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="">
+                                <tr
+                                v-for="(itemcml,index) in dessertsdetail" :key="index">
+                                <td>{{ itemcml.cml_number}}</td>
+                                <td>{{ itemcml.cml_description }}</td>
+                                <td>{{ itemcml.actual_outside_diameter }}</td>
+                                <td>{{ itemcml.design_thickness }}</td>
+                                <td>{{ itemcml.structural_thickness }}</td>
+                                <td>{{ itemcml.required_thickness }}</td>
+                                <td>
+                                    <v-btn
+                                    color="primary"
+                                    x-small
+                                    @click="
+                                        selectedItem = itemcml;
+                                        CMLSUM(itemcml);
+                                        dialogI = true;
+                                    ">
+                                    <span>View TP</span>
+                                    </v-btn>
+                                    <v-btn
+                                    color="primary"
+                                    x-small
+                                    @click="
+                                        selectedItem = item;
+                                        Senddatapup(item);
+                                        dialogI = true;
+                                    ">
+                                    <span>Edit</span>
+                                    </v-btn>
+                                    <v-btn
+                                    color="red"
+                                    x-small
+                                    @click="
+                                        selectedItem = item;
+                                        dialogD = true;
+                                    ">
+                                    <span>Delete</span>
+                                    </v-btn>
+                                </td>
+                                </tr>
+                            </tbody>
+                            
+                        </v-simple-table>       
+                    </div>
+                </v-card-text>
                 <v-divider></v-divider>
 
                 <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
-                    color="primary"
+                    color="dark"
                     text
                     @click="dialogD = false"
                 >
-                    I accept
+                    Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -362,10 +374,14 @@
                                 v-model="material"
                                 label="Material"
                             ></v-text-field>
-                            <v-text-field
-                                v-model="pipe_size"
-                                label="Pipe size"
-                            ></v-text-field>
+                            <div style="display: flex; align-items: center;">
+                                <v-select v-model="pipe_size" :items="items" label="Pipe size"></v-select>
+                                <v-btn class="mx-2" x-small fab dark color="indigo" @click="dialogpipe = true">
+                                    <v-icon dark>
+                                        mdi-plus
+                                    </v-icon>
+                                </v-btn> 
+                            </div>
                             <v-text-field
                                 v-model="stress"
                                 label="Stress"
@@ -383,6 +399,7 @@
                                 label="design temperature"
                             ></v-text-field>
                         </v-col>
+
 
                         <v-col
                             cols="12"
@@ -437,7 +454,7 @@
                 <v-btn
                     color="success"
                     text
-                    @click="dialogIAdd = false ,SaveData()"
+                    @click="SaveData()"
                 >
                     Save
                 </v-btn>
@@ -518,6 +535,136 @@
             </v-card>
             </v-dialog>
         </v-row>
+
+        <!-- Popup pipe -->
+        <v-row justify="center">
+            <v-dialog
+            v-model="dialogpipe"
+            persistent
+            max-width="290"
+            >
+            <v-card>
+                <v-card-title class="text-h5">
+                Add pipe size?
+                </v-card-title>
+                <v-card-text>
+                    ต้องการเพิ่มขนาดท่อ ?
+                    <br>(หากท่านต้องการลบให้ระบุ Pipe size)
+                    <v-text-field
+                        v-model="pipe_sizeadd"
+                        label="Pipe size"
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="Actual_outside_diameter"
+                        label="Actual outside diameter"
+                    ></v-text-field>    
+
+                </v-card-text>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="success"
+                    text
+                    @click="dialogpipe = false,addpipesize(),clearpipesize()"
+                >
+                    ADD
+                </v-btn>
+                <v-btn
+                    color="red"
+                    text
+                    @click="dialogpipe = false,delpipsize(),clearpipesize()"
+                >
+                    Delete
+                </v-btn>
+                <v-btn
+                    color="dark darken-1"
+                    text
+                    @click="dialogpipe = false,clearpipesize()"
+                >
+                    Close
+                </v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+        </v-row>
+
+        <!-- Popup dialogAddcml -->
+        <div class="text-center">
+            <v-dialog
+            v-model="dialogAddcml"
+            width="500"
+            >
+            <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                ADD CML
+                </v-card-title>                
+                <v-card-text>
+                    <v-form>
+                    <v-container>
+                    <v-row>
+                        <v-col
+                        cols="12"
+                        sm="6"
+                        >
+                            <v-text-field
+                                v-model="cml_number"
+                                label="CML number"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="cml_description"
+                                label="CML description"
+                            ></v-text-field>
+                            <v-text-field
+                                :value="actual_outside_diameter_cml"
+                                label="Actual outside diameter"
+                            ></v-text-field>
+                        </v-col>
+
+                        <v-col
+                        cols="12"
+                        sm="6"
+                        >
+                            <v-text-field
+                                v-model="design_thickness"
+                                label="Design thickness(mm)"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="structural_thickness"
+                                label="Structural thickness(mm)"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="required_thickness"
+                                label="Required thickness(mm)"
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    </v-container>
+                </v-form>
+                
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                    color="success"
+                    text
+                    @click="dialogAddcml = false,ADDCMLSUM(selectedItem)"
+                >
+                    Save
+                </v-btn>
+                <v-btn
+                    color="dark"
+                    text
+                    @click="dialogAddcml = false"
+                >
+                    Close
+                </v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+        </div>
+
     </div>
 </template>    
 
@@ -529,11 +676,17 @@ export default {
         selectedItem : [],
         item : null,
         dialogI : false,
+        dialogpipe : false,
         dialogIAdd : false,
         dialogD : false,
         dialogdel : false,
         dialogsave : false,
+        dialogAddcml : false,
         desserts: [],
+        dessertsdetail: [],
+        items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+        pipe_sizeadd:'',
+        Actual_outside_diameter:'',
 
         line_number:'',
         location:'',
@@ -554,12 +707,33 @@ export default {
         operating_temperature:'',
         design_life:'',
 
+        cml_number:'',
+        cml_description:'',
+        actual_outside_diameter_cml:'',
+        design_thickness:'',
+        structural_thickness:'',
+        required_thickness:'',
+
     }
   },
   mounted() {
     this.fetchData();
+    this.pipesize();
   },
   methods: {
+    pipesize(){
+        const db = this.$fireModule.database();
+        db.ref("PIPESIZE").on("value", (snapshot) => {
+            const childDate = snapshot.val();
+            const items = [];
+            for (const keyId in childDate) {
+                const datasize = childDate[keyId]; 
+                items.push(datasize.pipe_size);
+            }
+            this.items = items;
+        });
+    },
+
     fetchData() {
         const db = this.$fireModule.database();
         db.ref("INFO").on("value", (snapshot) => {
@@ -587,6 +761,7 @@ export default {
                         operating_pressure: datauser.operating_pressure || "-",
                         design_temperature: datauser.design_temperature || "-",
                         operating_temperature: datauser.operating_temperature || "-",
+                        Actual_outside: datauser.Actual_outside || "-",
                     };
                 items.push(item);
             }
@@ -595,6 +770,10 @@ export default {
     },
 
     SaveData() {
+        if(this.line_number === ''){
+            alert('กรุณาระบุข้อมูล');
+            return;
+        }
       try {
         const key = new Date().getTime();
         const db = this.$fireModule.database();
@@ -616,23 +795,33 @@ export default {
           operating_pressure: this.operating_pressure,
           design_temperature: this.design_temperature,
           operating_temperature: this.operating_temperature,
+          design_life : this.design_life,
         });
-
+        db.ref("PIPESIZE").on("value", (snapshot) => {
+            const childDate = snapshot.val();
+            for (const keyId in childDate) {
+                const datasize = childDate[keyId]; 
+                if(this.pipe_size === datasize.pipe_size){
+                    db.ref("INFO/"+key).update({
+                        Actual_outside: datasize.Actual_outside,
+                    })
+                }
+            }
+        });
         alert("บันทึกสำเร็จ");
-            console.log("success");
+            this.dialogIAdd = false
       }catch (err) {
+            // eslint-disable-next-line no-console
             console.log(err);
       }
     },
 
     Deletedata(senditem){
-        console.log(senditem);
         const db = this.$fireModule.database();
         db.ref(`INFO/${senditem.keyId}`).remove();
     },
 
     Saveeditdata(senditem){
-        console.log(senditem);
         try {
         const db = this.$fireModule.database();
         db.ref(`INFO/${senditem.keyId}`).update({
@@ -655,7 +844,19 @@ export default {
           design_temperature: this.design_temperature,
           operating_temperature: this.operating_temperature,
         });
+        db.ref("PIPESIZE").on("value", (snapshot) => {
+            const childDate = snapshot.val();
+            for (const keyId in childDate) {
+                const datasize = childDate[keyId]; 
+                if(this.pipe_size === datasize.pipe_size){
+                    db.ref(`INFO/${senditem.keyId}`).update({
+                        Actual_outside: datasize.Actual_outside,
+                    })
+                }
+            }
+        });
       }catch (err) {
+            // eslint-disable-next-line no-console
             console.log(err);
       }
     },
@@ -680,6 +881,117 @@ export default {
         this.operating_temperature = item.operating_temperature
         this.design_life = item.design_life
     },
+
+    cleardatapup(){
+        this.line_number = '';
+        this.location = '';
+        this.from = '';
+        this.to = '';
+        this.drawing_number = '';
+        this.service = '';
+        this.material = '';
+        this.inservice_date = '';
+        this.pipe_size = '';
+        this.original_thickness = '';
+        this.stress = '';
+        this.joint_efficiency = '';
+        this.ca = '';
+        this.design_pressure = '';
+        this.operating_pressure = '';
+        this.design_temperature = '';
+        this.operating_temperature = '';
+        this.design_life = '';
+    },
+    clearpipesize(){
+        this.pipe_sizeadd = '';
+        this.Actual_outside_diameter='';
+    },
+
+    addpipesize(){
+        if(this.pipe_sizeadd === ''|| this.Actual_outside_diameter===''){
+            alert('บันทึกไม่สำเร็จ');
+            return;
+        }
+        const key = new Date().getTime();
+        const db = this.$fireModule.database();
+        db.ref(`PIPESIZE/${key}`).update({
+            pipe_size : this.pipe_sizeadd,
+            Actual_outside : this.Actual_outside_diameter,
+        })  
+        alert('บันทึกสำเร็จ');
+    },
+
+    delpipsize(){
+        const db = this.$fireModule.database();
+        db.ref("PIPESIZE").on("value", (snapshot) => {
+            const childDate = snapshot.val();
+            const items = [];
+            for (const keyId in childDate) {
+                const datasize = childDate[keyId]; 
+                if(datasize.pipe_size === this.pipe_sizeadd){
+                    db.ref(`PIPESIZE/${keyId}`).remove();
+                    alert('ลบสำเร็จ');
+                }
+            }
+            this.items = items;
+        });
+        this.pipesize();
+    },
+
+    detailsum(item){
+        // eslint-disable-next-line no-console
+        console.log(item);
+        const db = this.$fireModule.database();
+        db.ref("CML/"+item.keyId).on("value", (snapshot) => {
+            const childDate = snapshot.val();
+            const items = [];
+            for (const keyId in childDate) {
+                const datauser = childDate[keyId];
+                    const item = {
+                        keyId,
+                        cml_number: datauser.cml_number || "-",
+                        cml_description: datauser.cml_description || "-",
+                        actual_outside_diameter: datauser.actual_outside_diameter || "-",
+                        design_thickness: datauser.design_thickness || "-",
+                        structural_thickness: datauser.structural_thickness || "-",
+                        required_thickness: datauser.required_thickness || "-",
+                    };
+                items.push(item);
+            }
+            this.dessertsdetail = items;
+        });
+    },
+
+    CMLSUM(item){
+        this.actual_outside_diameter_cml = item.Actual_outside;
+        if(item.pipe_size <= 2){
+            this.structural_thickness = 1.8;
+        }else if(item.pipe_size === 3){
+            this.structural_thickness = 2;
+        }else if(item.pipe_size === 4){
+            this.structural_thickness = 2.3;
+        }else if(item.pipe_size >= 6 && item.pipe_size <= 18){
+            this.structural_thickness = 2.8;
+        }else if(item.pipe_size >= 20){
+            this.structural_thickness = 3.1;
+        }else{this.structural_thickness = '-'};
+
+        this.design_thickness = (item.design_pressure * item.Actual_outside)/((2*item.stress*item.joint_efficiency)+(2 * item.design_pressure * 0.4));
+        this.required_thickness =  Math.max(this.design_thickness,this.structural_thickness);
+    },
+
+    ADDCMLSUM(item){
+        const key = new Date().getTime();
+        const db = this.$fireModule.database();
+        db.ref(`CML/${item.keyId}/${key}`).set({
+            actual_outside_diameter : this.actual_outside_diameter_cml,
+            structural_thickness : this.structural_thickness,
+            design_thickness : this.design_thickness,
+            required_thickness : this.required_thickness,
+            cml_number : this.cml_number,
+            cml_description : this.cml_description,
+        })  
+    }
   }
 }
 </script>
