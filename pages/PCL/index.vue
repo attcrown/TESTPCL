@@ -80,14 +80,13 @@
                             @click="
                                 selectedItem = item;
                                 dialogD = true;
-                                detailsum(selectedItem);
+                                detailsum(selectedItem);                                
                             ">
                             <span>Detail</span>
                             </v-btn>
                         </td>
                         </tr>
-                    </tbody>
-                    
+                    </tbody>                    
                 </v-simple-table>               
             </div>
         </v-card>
@@ -721,6 +720,9 @@ export default {
     this.pipesize();
   },
   methods: {
+    // btn1(){
+    //       this.$router.push("/PCL/detail");
+    //   },
     pipesize(){
         const db = this.$fireModule.database();
         db.ref("PIPESIZE").on("value", (snapshot) => {
