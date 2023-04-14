@@ -2,7 +2,7 @@
 <template>
     <div class="container mt-5">
         <div class="blue-grey lighten-3 text-left">
-            <h3>PIPING</h3>
+            <h3 class="ms-3 pt-3 pb-3">PIPING</h3>
         </div>
         <v-card
             class="ps-10 pe-10 pt-5 pb-10"
@@ -79,8 +79,7 @@
                             x-small
                             @click="
                                 selectedItem = item;
-                                dialogD = true;
-                                detailsum(selectedItem);                                
+                                btn1(selectedItem);                               
                             ">
                             <span>Detail</span>
                             </v-btn>
@@ -223,113 +222,6 @@
                     color="Dark"
                     text
                     @click="dialogI = false"
-                >
-                    Close
-                </v-btn>
-                </v-card-actions>
-            </v-card>
-            </v-dialog>
-        </div>
-
-        <!-- Popup Detail -->
-        <div class="text-center">
-            <v-dialog
-            v-model="dialogD"
-            width="1300"
-            >
-            <v-card>
-                <v-card-title class="text-h5 grey lighten-2">
-                PIPING                             
-                </v-card-title>
-                <v-card-text>
-                    <h3 class="mt-3 mb-3">LINE NUMBER: {{ selectedItem.line_number }}</h3>
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <v-card-title class="text-h8">CML</v-card-title>
-                            <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogAddcml = true),CMLSUM(selectedItem)"><span>Add CML</span></v-btn>
-                        </div>
-
-                        <v-simple-table
-                            fixed-header
-                            height="600px"
-                        >                    
-                            <thead>
-                                <tr>
-                                <th class="text-left">
-                                    CML number
-                                </th>
-                                <th class="text-left">
-                                    CML description
-                                </th>
-                                <th class="text-left">
-                                    Actual outside diameter
-                                </th>
-                                <th class="text-left">
-                                    Design thickness(mm)
-                                </th>
-                                <th class="text-left">
-                                    Structural thickness(mm)
-                                </th>
-                                <th class="text-left">
-                                    Required thickness(mm)
-                                </th>
-                                <th></th>
-                                </tr>
-                            </thead>
-                            <tbody class="">
-                                <tr
-                                v-for="(itemcml,index) in dessertsdetail" :key="index">
-                                <td>{{ itemcml.cml_number}}</td>
-                                <td>{{ itemcml.cml_description }}</td>
-                                <td>{{ itemcml.actual_outside_diameter }}</td>
-                                <td>{{ itemcml.design_thickness }}</td>
-                                <td>{{ itemcml.structural_thickness }}</td>
-                                <td>{{ itemcml.required_thickness }}</td>
-                                <td>
-                                    <v-btn
-                                    color="primary"
-                                    x-small
-                                    @click="
-                                        selectedItem = itemcml;
-                                        CMLSUM(itemcml);
-                                        dialogI = true;
-                                    ">
-                                    <span>View TP</span>
-                                    </v-btn>
-                                    <v-btn
-                                    color="primary"
-                                    x-small
-                                    @click="
-                                        selectedItem = item;
-                                        Senddatapup(item);
-                                        dialogI = true;
-                                    ">
-                                    <span>Edit</span>
-                                    </v-btn>
-                                    <v-btn
-                                    color="red"
-                                    x-small
-                                    @click="
-                                        selectedItem = item;
-                                        dialogD = true;
-                                    ">
-                                    <span>Delete</span>
-                                    </v-btn>
-                                </td>
-                                </tr>
-                            </tbody>
-                            
-                        </v-simple-table>       
-                    </div>
-                </v-card-text>
-                <v-divider></v-divider>
-
-                <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                    color="dark"
-                    text
-                    @click="dialogD = false"
                 >
                     Close
                 </v-btn>
@@ -585,84 +477,7 @@
                 </v-card-actions>
             </v-card>
             </v-dialog>
-        </v-row>
-
-        <!-- Popup dialogAddcml -->
-        <div class="text-center">
-            <v-dialog
-            v-model="dialogAddcml"
-            width="500"
-            >
-            <v-card>
-                <v-card-title class="text-h5 grey lighten-2">
-                ADD CML
-                </v-card-title>                
-                <v-card-text>
-                    <v-form>
-                    <v-container>
-                    <v-row>
-                        <v-col
-                        cols="12"
-                        sm="6"
-                        >
-                            <v-text-field
-                                v-model="cml_number"
-                                label="CML number"
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="cml_description"
-                                label="CML description"
-                            ></v-text-field>
-                            <v-text-field
-                                :value="actual_outside_diameter_cml"
-                                label="Actual outside diameter"
-                            ></v-text-field>
-                        </v-col>
-
-                        <v-col
-                        cols="12"
-                        sm="6"
-                        >
-                            <v-text-field
-                                v-model="design_thickness"
-                                label="Design thickness(mm)"
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="structural_thickness"
-                                label="Structural thickness(mm)"
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="required_thickness"
-                                label="Required thickness(mm)"
-                            ></v-text-field>
-                        </v-col>
-                    </v-row>
-                    </v-container>
-                </v-form>
-                
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn
-                    color="success"
-                    text
-                    @click="dialogAddcml = false,ADDCMLSUM(selectedItem)"
-                >
-                    Save
-                </v-btn>
-                <v-btn
-                    color="dark"
-                    text
-                    @click="dialogAddcml = false"
-                >
-                    Close
-                </v-btn>
-                </v-card-actions>
-            </v-card>
-            </v-dialog>
-        </div>
+        </v-row>        
 
     </div>
 </template>    
@@ -677,7 +492,6 @@ export default {
         dialogI : false,
         dialogpipe : false,
         dialogIAdd : false,
-        dialogD : false,
         dialogdel : false,
         dialogsave : false,
         dialogAddcml : false,
@@ -720,9 +534,12 @@ export default {
     this.pipesize();
   },
   methods: {
-    // btn1(){
-    //       this.$router.push("/PCL/detail");
-    //   },
+    btn1(item){
+        this.$router.push({
+            path: '/PCL/detail',
+            query: { value: item.keyId }
+        }) 
+      },
     pipesize(){
         const db = this.$fireModule.database();
         db.ref("PIPESIZE").on("value", (snapshot) => {
@@ -963,37 +780,35 @@ export default {
             this.dessertsdetail = items;
         });
     },
+    // CMLSUM(item){
+    //     this.actual_outside_diameter_cml = item.Actual_outside;
+    //     if(item.pipe_size <= 2){
+    //         this.structural_thickness = 1.8;
+    //     }else if(item.pipe_size === 3){
+    //         this.structural_thickness = 2;
+    //     }else if(item.pipe_size === 4){
+    //         this.structural_thickness = 2.3;
+    //     }else if(item.pipe_size >= 6 && item.pipe_size <= 18){
+    //         this.structural_thickness = 2.8;
+    //     }else if(item.pipe_size >= 20){
+    //         this.structural_thickness = 3.1;
+    //     }else{this.structural_thickness = '-'};
 
-    CMLSUM(item){
-        this.actual_outside_diameter_cml = item.Actual_outside;
-        if(item.pipe_size <= 2){
-            this.structural_thickness = 1.8;
-        }else if(item.pipe_size === 3){
-            this.structural_thickness = 2;
-        }else if(item.pipe_size === 4){
-            this.structural_thickness = 2.3;
-        }else if(item.pipe_size >= 6 && item.pipe_size <= 18){
-            this.structural_thickness = 2.8;
-        }else if(item.pipe_size >= 20){
-            this.structural_thickness = 3.1;
-        }else{this.structural_thickness = '-'};
-
-        this.design_thickness = (item.design_pressure * item.Actual_outside)/((2*item.stress*item.joint_efficiency)+(2 * item.design_pressure * 0.4));
-        this.required_thickness =  Math.max(this.design_thickness,this.structural_thickness);
-    },
-
-    ADDCMLSUM(item){
-        const key = new Date().getTime();
-        const db = this.$fireModule.database();
-        db.ref(`CML/${item.keyId}/${key}`).set({
-            actual_outside_diameter : this.actual_outside_diameter_cml,
-            structural_thickness : this.structural_thickness,
-            design_thickness : this.design_thickness,
-            required_thickness : this.required_thickness,
-            cml_number : this.cml_number,
-            cml_description : this.cml_description,
-        })  
-    }
+    //     this.design_thickness = (item.design_pressure * item.Actual_outside)/((2*item.stress*item.joint_efficiency)+(2 * item.design_pressure * 0.4));
+    //     this.required_thickness =  Math.max(this.design_thickness,this.structural_thickness);
+    // },
+    // ADDCMLSUM(item){
+    //     const key = new Date().getTime();
+    //     const db = this.$fireModule.database();
+    //     db.ref(`CML/${item.keyId}/${key}`).set({
+    //         actual_outside_diameter : this.actual_outside_diameter_cml,
+    //         structural_thickness : this.structural_thickness,
+    //         design_thickness : this.design_thickness,
+    //         required_thickness : this.required_thickness,
+    //         cml_number : this.cml_number,
+    //         cml_description : this.cml_description,
+    //     })  
+    // },
   }
 }
 </script>
