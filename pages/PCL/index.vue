@@ -638,6 +638,9 @@ export default {
     Deletedata(senditem){
         const db = this.$fireModule.database();
         db.ref(`INFO/${senditem.keyId}`).remove();
+        db.ref(`CML/${senditem.keyId}`).remove();
+        db.ref(`TEST_POINT/${senditem.keyId}`).remove();
+        db.ref(`THICKNESS/${senditem.keyId}`).remove();
     },
 
     Saveeditdata(senditem){
@@ -780,35 +783,6 @@ export default {
             this.dessertsdetail = items;
         });
     },
-    // CMLSUM(item){
-    //     this.actual_outside_diameter_cml = item.Actual_outside;
-    //     if(item.pipe_size <= 2){
-    //         this.structural_thickness = 1.8;
-    //     }else if(item.pipe_size === 3){
-    //         this.structural_thickness = 2;
-    //     }else if(item.pipe_size === 4){
-    //         this.structural_thickness = 2.3;
-    //     }else if(item.pipe_size >= 6 && item.pipe_size <= 18){
-    //         this.structural_thickness = 2.8;
-    //     }else if(item.pipe_size >= 20){
-    //         this.structural_thickness = 3.1;
-    //     }else{this.structural_thickness = '-'};
-
-    //     this.design_thickness = (item.design_pressure * item.Actual_outside)/((2*item.stress*item.joint_efficiency)+(2 * item.design_pressure * 0.4));
-    //     this.required_thickness =  Math.max(this.design_thickness,this.structural_thickness);
-    // },
-    // ADDCMLSUM(item){
-    //     const key = new Date().getTime();
-    //     const db = this.$fireModule.database();
-    //     db.ref(`CML/${item.keyId}/${key}`).set({
-    //         actual_outside_diameter : this.actual_outside_diameter_cml,
-    //         structural_thickness : this.structural_thickness,
-    //         design_thickness : this.design_thickness,
-    //         required_thickness : this.required_thickness,
-    //         cml_number : this.cml_number,
-    //         cml_description : this.cml_description,
-    //     })  
-    // },
   }
 }
 </script>

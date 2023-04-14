@@ -94,7 +94,7 @@
             <v-dialog
             v-model="dialogtestpoint"
             persistent
-            max-width="600"
+            max-width="800"
             >
             <v-card>
                 <v-card-title>
@@ -134,6 +134,8 @@
                                 x-small
                                 @click="
                                     selectedItem = itemtp;
+                                    edittp(selectedItem);
+                                    dataThickness();
                                     dialogthickness = true;
                                 ">
                                 <span>View Thickness</span>
@@ -153,7 +155,9 @@
                                 color="red"
                                 x-small
                                 @click="
-                                    dialogD = true;
+                                    selectedItem = itemtp;  
+                                    edittp(selectedItem);
+                                    DeleteTestpoint();
                                 ">
                                 <span>Delete</span>
                                 </v-btn>
@@ -187,7 +191,7 @@
                 <v-card-title>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <v-card-title class="text-h8">THICKNESS</v-card-title>
-                        <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogAddcml = true),CMLSUM()"><span>Add Thickness</span></v-btn>
+                        <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogaddthickness = true),Thickclear()"><span>Add Thickness</span></v-btn>
                     </div>
                     </v-card-title>
                         <v-card-text>
@@ -208,14 +212,16 @@
                         </thead>
                         <tbody class="">
                             <tr
-                            v-for="(itemcml,index) in dessertsdetail" :key="index">
-                            <td>{{ itemcml.cml_number}}</td>
-                            <td>{{ itemcml.cml_description }}</td>
+                            v-for="(itemth,index) in dessertsthickness" :key="index">
+                            <td>{{ itemth.Inspection_date}}</td>
+                            <td>{{ itemth.Actual_thickness }}</td>
                             <td>
                                 <v-btn
                                 color="primary"
                                 x-small
-                                @click="                                  
+                                @click=" 
+                                    selectedItem = itemth;  
+                                    editthink(selectedItem);                               
                                     dialogeditthickness = true;
                                 ">
                                 <span>Edit</span>
@@ -224,7 +230,8 @@
                                 color="red"
                                 x-small
                                 @click="
-                                    dialogD = true;
+                                    edittp(selectedItem);
+                                    DeleteThick();
                                 ">
                                 <span>Delete</span>
                                 </v-btn>
@@ -514,7 +521,7 @@
                 <v-btn
                     color="success"
                     text
-                    @click="dialogeditthickness = false"
+                    @click="dialogeditthickness = false ,saveeditthink()"
                 >
                     Save
                 </v-btn>
@@ -522,6 +529,66 @@
                     color="dark"
                     text
                     @click="dialogeditthickness = false"
+                >
+                    Close
+                </v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
+        </div>
+
+        <!-- Popup addthickness -->
+        <div class="text-center">
+            <v-dialog
+            v-model="dialogaddthickness"
+            width="500"
+            >
+            <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                Add Thickness
+                </v-card-title>                
+                <v-card-text>
+                    <v-form>
+                    <v-container>
+                    <v-row>
+                        <v-col
+                        cols="12"
+                        sm="6"
+                        >
+                            <v-text-field
+                                v-model="Inspection_date"
+                                label="Inspection date"
+                            ></v-text-field>                          
+                        </v-col>
+                        <v-col
+                        cols="12"
+                        sm="6"
+                        >
+                            <v-text-field
+                                v-model="Actual_thickness"
+                                label="Actual thickness"
+                            ></v-text-field>                            
+                        </v-col>
+                    </v-row>
+                    </v-container>
+                </v-form>
+                
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                    color="success"
+                    text
+                    @click="dialogaddthickness = false,saveaddthickness()"
+                >
+                    Save
+                </v-btn>
+                <v-btn
+                    color="dark"
+                    text
+                    @click="dialogaddthickness = false"
                 >
                     Close
                 </v-btn>
@@ -690,6 +757,7 @@ export default {
             dialogthickness : false,
             dialogeditthickness : false,
             dialogeditcml : false,
+            dialogaddthickness : false,
             dessertsdetail: [],
             dessertspoint: [],
             dessertsthickness: [],
@@ -740,13 +808,21 @@ export default {
             this.required_thickness =  Math.max(this.design_thickness,this.structural_thickness);
         },
         CMLclear(){
-            this.cml_number = "";
+            this.cml_number = '';
             this.cml_description = '';
+            this.actual_outside_diameter_cml = '';
+            this.design_thickness = '';
+            this.structural_thickness = '';
+            this.required_thickness = '';
         },
         TPclear(){
             this.tp_number = '';
             this.tp_description = '';
             this.note_tp = '';
+        },
+        Thickclear(){
+            this.Inspection_date = '';
+            this.Actual_thickness = '';
         },
         detailsum(){
             // eslint-disable-next-line no-console
@@ -818,9 +894,9 @@ export default {
                     const datauser = childDate[keyId];
                         const item = {
                             keyId,
-                            tp_number: datauser.tp_number,
-                            tp_description: datauser.tp_description,
-                            note_tp: datauser.note_tp,
+                            tp_number: datauser.tp_number || "-",
+                            tp_description: datauser.tp_description || "-",
+                            note_tp: datauser.note_tp || "-",
                         };
                     items.push(item);
                 }
@@ -883,6 +959,8 @@ export default {
         Deletedata(senditem){
         const db = this.$fireModule.database();
         db.ref(`CML/${this.id}/${senditem.keyId}`).remove();
+        db.ref(`TEST_POINT/${this.id}/${senditem.keyId}/`).remove();
+        db.ref(`THICKNESS/${this.id}/${senditem.keyId}/`).remove();
         alert('ลบสำเร็จ');
         },
 
@@ -898,7 +976,67 @@ export default {
                 cml_description : this.cml_description,
             }) 
             alert('บันทึกสำเร็จ'); 
+            window.location.reload();
         },
+
+        saveaddthickness(){
+            const key = new Date().getTime();
+            const db = this.$fireModule.database();
+            db.ref(`THICKNESS/${this.id}/${this.keyIdcmd}/${this.keyIdtp}/${key}`).set({
+                Inspection_date : this.Inspection_date,
+                Actual_thickness : this.Actual_thickness,
+            }) 
+            alert('บันทึกสำเร็จ');
+        },
+
+        dataThickness(){
+            // eslint-disable-next-line no-console
+            const db = this.$fireModule.database();
+            db.ref(`THICKNESS/${this.id}/${this.keyIdcmd}/${this.keyIdtp}/`).on("value", (snapshot) => {
+                const childDate = snapshot.val();
+                const items = [];
+                for (const keyId in childDate) {
+                    const datauser = childDate[keyId];
+                        const item = {
+                            keyId,
+                            Inspection_date: datauser.Inspection_date || "-",
+                            Actual_thickness: datauser.Actual_thickness || "-",
+                        };
+                    items.push(item);
+                }
+                this.dessertsthickness = items;
+            });
+        },
+
+        editthink(item){
+            this.keyIdthick = item.keyId;
+            this.Inspection_date = item.Inspection_date;
+            this.Actual_thickness = item.Actual_thickness;
+        },
+
+        saveeditthink(){
+            const db = this.$fireModule.database();
+            db.ref(`THICKNESS/${this.id}/${this.keyIdcmd}/${this.keyIdtp}/${this.keyIdthick}/`).update({
+                Inspection_date : this.Inspection_date,
+                Actual_thickness : this.Actual_thickness,
+            }) 
+            alert('บันทึกสำเร็จ');
+        },
+
+        DeleteThick(){
+            const db = this.$fireModule.database();
+            db.ref(`THICKNESS/${this.id}/${this.keyIdcmd}/${this.keyIdtp}/${this.keyIdthick}`).remove();
+            alert('ลบสำเร็จ');
+        },
+
+        DeleteTestpoint(){
+            const db = this.$fireModule.database();
+            db.ref(`TEST_POINT/${this.id}/${this.keyIdcmd}/${this.keyIdtp}`).remove();
+            db.ref(`THICKNESS/${this.id}/${this.keyIdcmd}/${this.keyIdtp}`).remove();
+            alert('ลบสำเร็จ');
+        },
+
+
     },
 }
 </script>
