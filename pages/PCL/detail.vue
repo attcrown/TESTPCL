@@ -13,7 +13,7 @@
             <div>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <v-card-title class="text-h8">CML</v-card-title>
-                    <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogAddcml = true),CMLclear(),CMLSUM()"><span>Add CML</span></v-btn>
+                    <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogAddcml = true),CMLclear(),CMLSUM()"><span class="mdi mdi-plus" style="font-size: 20px;"></span><span>Add CML</span></v-btn>
                 </div>
                 <v-simple-table
                     fixed-header
@@ -60,8 +60,8 @@
                                 editcml(itemcml);
                                 dataTP();
                                 dialogtestpoint = true;
-                            ">
-                            <span>View TP</span>
+                            ">                            
+                            <span style="font-size: 15px;" class="mdi mdi-database-eye"></span><span>View TP</span>
                             </v-btn>
                             <v-btn
                             color="primary"
@@ -69,8 +69,8 @@
                             @click="                                
                                 dialogeditcml = true;
                                 editcml(itemcml);
-                            ">
-                            <span>Edit</span>
+                            ">                            
+                            <span class="mdi mdi-file-edit-outline" style="font-size: 15px;"></span><span>Edit</span>
                             </v-btn>
                             <v-btn
                             color="red"
@@ -79,7 +79,7 @@
                                 selectedItem = itemcml;
                                 Deletedata(itemcml);                        
                             ">
-                            <span>Delete</span>
+                            <span class="mdi mdi-delete-alert-outline" style="font-size: 15px;"></span><span>Delete</span>
                             </v-btn>
                         </td>
                         </tr>
@@ -100,7 +100,7 @@
                 <v-card-title>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <v-card-title class="text-h8">TEST POINT</v-card-title>
-                        <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogAddTP = true),TPclear()"><span>Add TP</span></v-btn>
+                        <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogAddTP = true),TPclear()"><span class="mdi mdi-plus" style="font-size: 20px;"></span><span>Add TP</span></v-btn>
                     </div>
                 </v-card-title>
                     <v-card-text>
@@ -138,7 +138,7 @@
                                     dataThickness();
                                     dialogthickness = true;
                                 ">
-                                <span>View Thickness</span>
+                                <span style="font-size: 15px;" class="mdi mdi-database-eye"></span><span>View Thickness</span>
                                 </v-btn>
                                 <v-btn
                                 color="primary"
@@ -149,7 +149,7 @@
                                     dialogedittestpoint = true;
 
                                 ">
-                                <span>Edit</span>
+                                <span class="mdi mdi-file-edit-outline" style="font-size: 15px;"></span><span>Edit</span>
                                 </v-btn>
                                 <v-btn
                                 color="red"
@@ -159,7 +159,7 @@
                                     edittp(selectedItem);
                                     DeleteTestpoint();
                                 ">
-                                <span>Delete</span>
+                                <span class="mdi mdi-delete-alert-outline" style="font-size: 15px;"></span><span>Delete</span>
                                 </v-btn>
                             </td>
                             </tr>
@@ -173,7 +173,7 @@
                     text
                     @click="dialogtestpoint = false"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -191,7 +191,7 @@
                 <v-card-title>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <v-card-title class="text-h8">THICKNESS</v-card-title>
-                        <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogaddthickness = true),Thickclear()"><span>Add Thickness</span></v-btn>
+                        <v-btn elevation="2" color="text-h8 dark lighten-2 pa-2" @click="(dialogaddthickness = true),Thickclear()"><span class="mdi mdi-plus" style="font-size: 20px;"></span><span>Add Thickness</span></v-btn>
                     </div>
                     </v-card-title>
                         <v-card-text>
@@ -224,7 +224,7 @@
                                     editthink(selectedItem);                               
                                     dialogeditthickness = true;
                                 ">
-                                <span>Edit</span>
+                                <span class="mdi mdi-file-edit-outline" style="font-size: 15px;"></span><span>Edit</span>
                                 </v-btn>
                                 <v-btn
                                 color="red"
@@ -233,7 +233,7 @@
                                     edittp(selectedItem);
                                     DeleteThick();
                                 ">
-                                <span>Delete</span>
+                                <span class="mdi mdi-delete-alert-outline" style="font-size: 15px;"></span><span>Delete</span>
                                 </v-btn>
                             </td>
                             </tr>
@@ -247,7 +247,7 @@
                     text
                     @click="dialogthickness = false"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -317,14 +317,14 @@
                     text
                     @click="dialogAddcml = false,ADDCMLSUM()"
                 >
-                    Save
+                <span class="mdi mdi-content-save-edit-outline"></span>Save
                 </v-btn>
                 <v-btn
                     color="dark"
                     text
                     @click="dialogAddcml = false"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -394,14 +394,14 @@
                     text
                     @click="dialogeditcml = false,saveeditcml()"
                 >
-                    Save
+                <span class="mdi mdi-content-save-edit-outline"></span>Save
                 </v-btn>
                 <v-btn
                     color="dark"
                     text
                     @click="dialogeditcml = false"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -463,14 +463,14 @@
                     text
                     @click="saveeditTP(),dialogedittestpoint = false"
                 >
-                    Save
+                <span class="mdi mdi-content-save-edit-outline"></span>Save
                 </v-btn>
                 <v-btn
                     color="dark"
                     text
                     @click="dialogedittestpoint = false"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -523,14 +523,14 @@
                     text
                     @click="dialogeditthickness = false ,saveeditthink()"
                 >
-                    Save
+                <span class="mdi mdi-content-save-edit-outline"></span>Save
                 </v-btn>
                 <v-btn
                     color="dark"
                     text
                     @click="dialogeditthickness = false"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -1035,8 +1035,6 @@ export default {
             db.ref(`THICKNESS/${this.id}/${this.keyIdcmd}/${this.keyIdtp}`).remove();
             alert('ลบสำเร็จ');
         },
-
-
     },
 }
 </script>

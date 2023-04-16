@@ -14,7 +14,7 @@
                 elevation="2"
                 color="text-h8 dark lighten-2 pa-2"
                 @click="(dialogIAdd = true),cleardatapup()"
-            ><span>Add Piping</span>
+            ><span class="mdi mdi-plus" style="font-size: 20px;"></span><span>Add Piping</span>
             </v-btn>
         </div>
             <div>
@@ -71,7 +71,7 @@
                                 Senddatapup(item);
                                 dialogI = true;
                             ">
-                            <span>Info</span>
+                            <span class="mdi mdi-information-outline" style="font-size: 15px;"></span><span>Info</span>
                             </v-btn>
 
                             <v-btn
@@ -81,7 +81,7 @@
                                 selectedItem = item;
                                 btn1(selectedItem);                               
                             ">
-                            <span>Detail</span>
+                            <span class="mdi mdi-details" style="font-size: 15px;"></span><span>Detail</span>
                             </v-btn>
                         </td>
                         </tr>
@@ -209,21 +209,21 @@
                     text
                     @click="dialogsave = true"
                 >
-                    Save
+                <span class="mdi mdi-content-save-edit-outline"></span>Save
                 </v-btn>
                 <v-btn
                     color="red"
                     text
                     @click="(dialogdel = true)"
                 >
-                    Delete
+                <span class="mdi mdi-delete-alert-outline"></span>Delete
                 </v-btn>
                 <v-btn
                     color="Dark"
                     text
                     @click="dialogI = false"
-                >
-                    Close
+                >                    
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -347,14 +347,14 @@
                     text
                     @click="SaveData()"
                 >
-                    Save
+                <span class="mdi mdi-content-save-edit-outline"></span>Save
                 </v-btn>
                 <v-btn
                     color="red"
                     text
                     @click="dialogIAdd = false"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -380,14 +380,14 @@
                     text
                     @click="dialogdel = false,dialogI = false,Deletedata(selectedItem)"
                 >
-                    Delete
+                <span class="mdi mdi-delete-alert-outline"></span>Delete
                 </v-btn>
                 <v-btn
                     color="dark darken-1"
                     text
                     @click="dialogdel = false"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -413,14 +413,14 @@
                     text
                     @click="dialogsave = false,dialogI = false,Saveeditdata(selectedItem)"
                 >
-                    Save
+                <span class="mdi mdi-content-save-edit-outline"></span>Save
                 </v-btn>
                 <v-btn
                     color="dark darken-1"
                     text
                     @click="dialogsave = false"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
@@ -458,21 +458,21 @@
                     text
                     @click="dialogpipe = false,addpipesize(),clearpipesize()"
                 >
-                    ADD
+                <span class="mdi mdi-plus"></span>ADD
                 </v-btn>
                 <v-btn
                     color="red"
                     text
                     @click="dialogpipe = false,delpipsize(),clearpipesize()"
                 >
-                    Delete
+                <span class="mdi mdi-delete-alert-outline"></span>Delete
                 </v-btn>
                 <v-btn
                     color="dark darken-1"
                     text
                     @click="dialogpipe = false,clearpipesize()"
                 >
-                    Close
+                <span class="mdi mdi-close-circle-outline"></span>Close
                 </v-btn>
                 </v-card-actions>
             </v-card>
